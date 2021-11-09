@@ -87,11 +87,12 @@ void HAL_SYSTICK_Callback(void)
   {
     /* publish message */
     /* state estimate */
-    if (counter++ > 8)
-    {
+    imu_.update();
+    attitude_estimator_.update();
+    if (counter++ > 8){
       counter = 0;
-      imu_.update();
-      attitude_estimator_.update();
+      /* send message to ros*/
+      attitude_estimator_.publish();
     }
   }
 }

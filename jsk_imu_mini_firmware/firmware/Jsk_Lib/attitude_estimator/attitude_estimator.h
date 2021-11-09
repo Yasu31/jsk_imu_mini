@@ -36,7 +36,7 @@
 #define MADWICK 2
 
 /* please change the algorithm type according to your application */
-#define ESTIMATE_TYPE MADWICK
+#define ESTIMATE_TYPE COMPLEMENTARY
 
 class AttitudeEstimator
 {
@@ -85,10 +85,6 @@ public:
       if (!imu_->getCalibrated())
         return;
       estimator_->update(imu_->getGyro(), imu_->getAcc(), imu_->getMag());
-
-      /* send message to ros*/
-      if (nh_->connected())
-        publish();
 
       /* reset update status of imu*/
       imu_->setUpdate(false);
