@@ -36,7 +36,7 @@
 #define MADWICK 2
 
 /* please change the algorithm type according to your application */
-#define ESTIMATE_TYPE COMPLEMENTARY
+#define ESTIMATE_TYPE MADWICK
 
 class AttitudeEstimator
 {

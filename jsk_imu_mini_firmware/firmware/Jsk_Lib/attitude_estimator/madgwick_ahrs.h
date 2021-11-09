@@ -155,6 +155,8 @@ private:
     q_[1] *= recipNorm;
     q_[2] *= recipNorm;
     q_[3] *= recipNorm;
+
+    q_.to_euler(rpy_[0], rpy_[1], rpy_[2]);
   }
 
   void accGyroEstimate(float gx, float gy, float gz, float ax, float ay, float az)
@@ -224,6 +226,8 @@ private:
     q_[1] *= recipNorm;
     q_[2] *= recipNorm;
     q_[3] *= recipNorm;
+
+    q_.to_euler(rpy_[0], rpy_[1], rpy_[2]);
   }
 };
 #endif
