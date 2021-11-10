@@ -89,9 +89,9 @@ void HAL_SYSTICK_Callback(void)
     /* state estimate */
     imu_.update();
     attitude_estimator_.update();
-    if (counter++ > 8){
+    if (counter++ > 10){
       counter = 0;
-      /* send message to ros*/
+      /* send message to ros at 100Hz*/
       attitude_estimator_.publish();
     }
   }
