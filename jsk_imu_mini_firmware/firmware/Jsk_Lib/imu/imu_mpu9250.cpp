@@ -33,7 +33,7 @@ void IMU::init(SPI_HandleTypeDef* hspi, ros::NodeHandle* nh)
   mag_outlier_counter_ = 0;
 
   hspi_ = hspi;
-  readCalibData();
+//  readCalibData();  // this causes nan values, comment out for now
   gyroInit();
   accInit();
   magInit();
@@ -154,16 +154,12 @@ void IMU::gyroInit(void)
   mpuWrite(0x6A, 0x10);           // disable i2c communication
   HAL_Delay(1);                   // very importnat! between gyro and acc
   mpuWrite(0x1A, GYRO_DLPF_CFG);  // CONFIG        -- EXT_SYNC_SET 0 (disable input pin for data sync) ; default
-                                  // DLPF_CFG = 0 => ACC bandwidth = 260Hz  GYRO bandwidth = 256Hz)
   HAL_Delay(1);                   // very importnat! between gyro and acc
   mpuWrite(0x1B, 0x18);           // GYRO_CONFIG   -- FS_SEL = 3: Full scale set to 2000 deg/sec
   HAL_Delay(10);                  // very importnat! between gyro and acc
 
   // calib in the first time
   calibrate_gyro_ = 10;  // CALIBRATING_STEP;
-  // calibrate_gyro_ = 0;
-
-  raw_gyro_p_.zero();
 }
 
 void IMU::accInit(void)
@@ -171,12 +167,9 @@ void IMU::accInit(void)
   mpuWrite(0x1C, 0x10);  // ACCEL_CONFIG  -- AFS_SEL=2 (Full Scale = +/-8G)  ; ACCELL_HPF=0   //note something is wrong
                          // in the spec.
   HAL_Delay(1);
-  // old: acceleration bandwidth is 460Hz
   mpuWrite(0x1D, ACC_DLPF_CFG);
   HAL_Delay(10);
   calibrate_acc_ = 0;
-
-  raw_acc_p_.zero();
 }
 
 void IMU::magInit(void)
@@ -295,12 +288,7 @@ void IMU::process(void)
     calibrate_gyro_--;
   }
   else
-  {
-    raw_gyro_ = raw_gyro_adc_ - gyro_offset_;
-    raw_gyro_p_ -= (raw_gyro_p_ / GYRO_LPF_FACTOR);
-    raw_gyro_p_ += raw_gyro_;
-    gyro_ = (raw_gyro_p_ / GYRO_LPF_FACTOR);
-  }
+    gyro_ = raw_gyro_adc_ - gyro_offset_;
 
   /* acc part */
   if (calibrate_acc_ > 0)
@@ -323,12 +311,7 @@ void IMU::process(void)
     calibrate_acc_--;
   }
   else
-  {
-    raw_acc_ = raw_acc_adc_ - acc_offset_;
-    raw_acc_p_ -= (raw_acc_p_ / ACC_LPF_FACTOR);
-    raw_acc_p_ += raw_acc_;
-    acc_ = (raw_acc_p_ / ACC_LPF_FACTOR);
-  }
+    acc_ = raw_acc_adc_ - acc_offset_;
 
   /* mag part */
   if (calibrate_mag_ > 0)

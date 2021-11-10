@@ -81,10 +81,8 @@ public:
   static const uint32_t CALIBRATING_STEP = 1000;
   static const uint32_t CALIBRATING_MAG_STEP = 1200;  // about 30s (0.01s * 3000; 0.001s * 30000)
 
-  static const uint8_t GYRO_DLPF_CFG = 0x01;  // 0x04 //0: 250Hz, 0.97ms; 3: 41Hz, 5.9ms(kduino); 4: 20Hz: 9.9ms
-  static const uint8_t ACC_DLPF_CFG = 0x03;   // 0x03: 41Hz, 11.80ms
-  static const uint8_t ACC_LPF_FACTOR = 42;   // old: 16
-  static const uint8_t GYRO_LPF_FACTOR = 12;  // old: 8
+  static const uint8_t GYRO_DLPF_CFG = 0x03;  // Bandwidth setting for gyro LPF 0x03: 41Hz, 5.9ms(kduino) (see MPU-9250 register map for more)
+  static const uint8_t ACC_DLPF_CFG = 0x03;   // Bandwidth setting for acc LPF 0x03: 41Hz, 11.80ms
   static const uint8_t MAG_ADDRESS = 0x0C;
   static const uint8_t MAG_DATA_REGISTER = 0x03;
 
@@ -123,12 +121,8 @@ private:
   uint8_t reset_calib_flag_;
 
   Vector3f raw_gyro_adc_, raw_acc_adc_, raw_mag_adc_;
-
-  Vector3f raw_acc_, raw_gyro_, raw_mag_;
+  Vector3f raw_mag_;
   Vector3f acc_, gyro_, mag_;
-
-  Vector3f raw_gyro_p_;
-  Vector3f raw_acc_p_;
 
   int calibrate_acc_;
   int calibrate_gyro_;
