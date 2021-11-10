@@ -15,7 +15,7 @@
 #include <math.h>
 /* #include "arm_math.h" */
 
-#define DELTA_T 0.00125f
+#define DELTA_T 0.001f
 
 class EstimatorAlgorithm
 {

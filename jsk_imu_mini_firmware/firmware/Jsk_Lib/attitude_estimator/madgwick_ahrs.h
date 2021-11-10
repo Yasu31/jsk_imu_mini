@@ -16,7 +16,7 @@
 #define betaDef 0.1f  // 2 * proportional gain
 #define ACC_GYRO 0
 #define ACC_GYRO_MAG 1
-#define ESTIMATE_METHOD ACC_GYRO_MAG
+#define ESTIMATE_METHOD ACC_GYRO
 
 class MadgwickAHRS : public EstimatorAlgorithm
 {
@@ -34,7 +34,7 @@ public:
 #endif
 
 #if ESTIMATE_METHOD == ACC_GYRO
-    accGyroMagEstimate(gyro_b_[0], gyro_b_[1], gyro_b_[2], acc_b_[0], acc_b_[1], acc_b_[2]);
+    accGyroEstimate(gyro_b_[0], gyro_b_[1], gyro_b_[2], acc_b_[0], acc_b_[1], acc_b_[2]);
 #endif
   }
 

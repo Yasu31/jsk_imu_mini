@@ -223,7 +223,7 @@ void SystemClock_Config(void)
     _Error_Handler(__FILE__, __LINE__);
   }
 
-  /**Configure the Systick interrupt time
+  /**Configure the Systick interrupt time to 1000 Hz
   */
   HAL_SYSTICK_Config(HAL_RCC_GetHCLKFreq() / 1000);
 
