@@ -13,7 +13,8 @@ namespace jsk_imu_mini_msgs
   class Imu : public ros::Msg
   {
     public:
-      ros::Time stamp;
+      typedef ros::Time _stamp_type;
+      _stamp_type stamp;
       float acc_data[3];
       float gyro_data[3];
       float mag_data[3];
@@ -41,7 +42,7 @@ namespace jsk_imu_mini_msgs
       *(outbuffer + offset + 2) = (this->stamp.nsec >> (8 * 2)) & 0xFF;
       *(outbuffer + offset + 3) = (this->stamp.nsec >> (8 * 3)) & 0xFF;
       offset += sizeof(this->stamp.nsec);
-      for( uint8_t i = 0; i < 3; i++){
+      for( uint32_t i = 0; i < 3; i++){
       union {
         float real;
         uint32_t base;
@@ -53,7 +54,7 @@ namespace jsk_imu_mini_msgs
       *(outbuffer + offset + 3) = (u_acc_datai.base >> (8 * 3)) & 0xFF;
       offset += sizeof(this->acc_data[i]);
       }
-      for( uint8_t i = 0; i < 3; i++){
+      for( uint32_t i = 0; i < 3; i++){
       union {
         float real;
         uint32_t base;
@@ -65,7 +66,7 @@ namespace jsk_imu_mini_msgs
       *(outbuffer + offset + 3) = (u_gyro_datai.base >> (8 * 3)) & 0xFF;
       offset += sizeof(this->gyro_data[i]);
       }
-      for( uint8_t i = 0; i < 3; i++){
+      for( uint32_t i = 0; i < 3; i++){
       union {
         float real;
         uint32_t base;
@@ -77,7 +78,7 @@ namespace jsk_imu_mini_msgs
       *(outbuffer + offset + 3) = (u_mag_datai.base >> (8 * 3)) & 0xFF;
       offset += sizeof(this->mag_data[i]);
       }
-      for( uint8_t i = 0; i < 3; i++){
+      for( uint32_t i = 0; i < 3; i++){
       union {
         float real;
         uint32_t base;
@@ -105,7 +106,7 @@ namespace jsk_imu_mini_msgs
       this->stamp.nsec |= ((uint32_t) (*(inbuffer + offset + 2))) << (8 * 2);
       this->stamp.nsec |= ((uint32_t) (*(inbuffer + offset + 3))) << (8 * 3);
       offset += sizeof(this->stamp.nsec);
-      for( uint8_t i = 0; i < 3; i++){
+      for( uint32_t i = 0; i < 3; i++){
       union {
         float real;
         uint32_t base;
@@ -118,7 +119,7 @@ namespace jsk_imu_mini_msgs
       this->acc_data[i] = u_acc_datai.real;
       offset += sizeof(this->acc_data[i]);
       }
-      for( uint8_t i = 0; i < 3; i++){
+      for( uint32_t i = 0; i < 3; i++){
       union {
         float real;
         uint32_t base;
@@ -131,7 +132,7 @@ namespace jsk_imu_mini_msgs
       this->gyro_data[i] = u_gyro_datai.real;
       offset += sizeof(this->gyro_data[i]);
       }
-      for( uint8_t i = 0; i < 3; i++){
+      for( uint32_t i = 0; i < 3; i++){
       union {
         float real;
         uint32_t base;
@@ -144,7 +145,7 @@ namespace jsk_imu_mini_msgs
       this->mag_data[i] = u_mag_datai.real;
       offset += sizeof(this->mag_data[i]);
       }
-      for( uint8_t i = 0; i < 3; i++){
+      for( uint32_t i = 0; i < 3; i++){
       union {
         float real;
         uint32_t base;

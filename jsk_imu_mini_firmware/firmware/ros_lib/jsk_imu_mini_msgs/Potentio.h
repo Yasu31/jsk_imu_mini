@@ -13,10 +13,12 @@ namespace jsk_imu_mini_msgs
   class Potentio : public ros::Msg
   {
     public:
-      ros::Time stamp;
-      uint8_t potentio_length;
-      uint16_t st_potentio;
-      uint16_t * potentio;
+      typedef ros::Time _stamp_type;
+      _stamp_type stamp;
+      uint32_t potentio_length;
+      typedef uint16_t _potentio_type;
+      _potentio_type st_potentio;
+      _potentio_type * potentio;
 
     Potentio():
       stamp(),
@@ -37,11 +39,12 @@ namespace jsk_imu_mini_msgs
       *(outbuffer + offset + 2) = (this->stamp.nsec >> (8 * 2)) & 0xFF;
       *(outbuffer + offset + 3) = (this->stamp.nsec >> (8 * 3)) & 0xFF;
       offset += sizeof(this->stamp.nsec);
-      *(outbuffer + offset++) = potentio_length;
-      *(outbuffer + offset++) = 0;
-      *(outbuffer + offset++) = 0;
-      *(outbuffer + offset++) = 0;
-      for( uint8_t i = 0; i < potentio_length; i++){
+      *(outbuffer + offset + 0) = (this->potentio_length >> (8 * 0)) & 0xFF;
+      *(outbuffer + offset + 1) = (this->potentio_length >> (8 * 1)) & 0xFF;
+      *(outbuffer + offset + 2) = (this->potentio_length >> (8 * 2)) & 0xFF;
+      *(outbuffer + offset + 3) = (this->potentio_length >> (8 * 3)) & 0xFF;
+      offset += sizeof(this->potentio_length);
+      for( uint32_t i = 0; i < potentio_length; i++){
       *(outbuffer + offset + 0) = (this->potentio[i] >> (8 * 0)) & 0xFF;
       *(outbuffer + offset + 1) = (this->potentio[i] >> (8 * 1)) & 0xFF;
       offset += sizeof(this->potentio[i]);
@@ -62,12 +65,15 @@ namespace jsk_imu_mini_msgs
       this->stamp.nsec |= ((uint32_t) (*(inbuffer + offset + 2))) << (8 * 2);
       this->stamp.nsec |= ((uint32_t) (*(inbuffer + offset + 3))) << (8 * 3);
       offset += sizeof(this->stamp.nsec);
-      uint8_t potentio_lengthT = *(inbuffer + offset++);
+      uint32_t potentio_lengthT = ((uint32_t) (*(inbuffer + offset))); 
+      potentio_lengthT |= ((uint32_t) (*(inbuffer + offset + 1))) << (8 * 1); 
+      potentio_lengthT |= ((uint32_t) (*(inbuffer + offset + 2))) << (8 * 2); 
+      potentio_lengthT |= ((uint32_t) (*(inbuffer + offset + 3))) << (8 * 3); 
+      offset += sizeof(this->potentio_length);
       if(potentio_lengthT > potentio_length)
         this->potentio = (uint16_t*)realloc(this->potentio, potentio_lengthT * sizeof(uint16_t));
-      offset += 3;
       potentio_length = potentio_lengthT;
-      for( uint8_t i = 0; i < potentio_length; i++){
+      for( uint32_t i = 0; i < potentio_length; i++){
       this->st_potentio =  ((uint16_t) (*(inbuffer + offset)));
       this->st_potentio |= ((uint16_t) (*(inbuffer + offset + 1))) << (8 * 1);
       offset += sizeof(this->st_potentio);

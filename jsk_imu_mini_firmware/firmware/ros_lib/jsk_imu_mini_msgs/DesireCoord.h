@@ -12,10 +12,14 @@ namespace jsk_imu_mini_msgs
   class DesireCoord : public ros::Msg
   {
     public:
-      float roll;
-      float pitch;
-      float yaw;
-      uint8_t coord_type;
+      typedef float _roll_type;
+      _roll_type roll;
+      typedef float _pitch_type;
+      _pitch_type pitch;
+      typedef float _yaw_type;
+      _yaw_type yaw;
+      typedef uint8_t _coord_type_type;
+      _coord_type_type coord_type;
 
     DesireCoord():
       roll(0),
