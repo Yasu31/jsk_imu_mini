@@ -60,9 +60,9 @@ public:
     imu_pub_ = new ros::Publisher("imu", &imu_msg_);
     nh_->advertise(*imu_pub_);
 
-    desire_coord_sub_ = new ros::Subscriber2<jsk_imu_mini_msgs::DesireCoord, AttitudeEstimator>(
+    desire_coord_sub_ = new ros::Subscriber<jsk_imu_mini_msgs::DesireCoord, AttitudeEstimator>(
         "/desire_coordinate", &AttitudeEstimator::desireCoordCallback, this);
-    nh_->subscribe<jsk_imu_mini_msgs::DesireCoord, AttitudeEstimator>(*desire_coord_sub_);
+    nh_->subscribe(*desire_coord_sub_);
 
     imu_ = imu;
 
@@ -134,7 +134,7 @@ public:
   ros::NodeHandle* nh_;
   ros::Publisher* imu_pub_;
   jsk_imu_mini_msgs::Imu imu_msg_;
-  ros::Subscriber2<jsk_imu_mini_msgs::DesireCoord, AttitudeEstimator>* desire_coord_sub_;
+  ros::Subscriber<jsk_imu_mini_msgs::DesireCoord, AttitudeEstimator>* desire_coord_sub_;
 
   EstimatorAlgorithm* estimator_;
   IMU* imu_;
