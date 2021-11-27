@@ -67,7 +67,10 @@ void SystemClock_Config(void);
 /* USER CODE END PFP */
 
 /* USER CODE BEGIN 0 */
-static int counter = 0;
+static int IMU_pub_counter = 0;
+// publish IMU at 100 Hz (=1000Hz/10)
+// reduce this to increase IMU publish rate
+static constexpr int IMU_pub_interval = 10;
 static int LEDcounter = 0;
 
 // attitude estimate and  control is at sys timer it callback
@@ -85,13 +88,13 @@ void HAL_SYSTICK_Callback(void)
   /* please check whether connection between ros and mcu is build */
   if (nh_.connected())
   {
-    /* publish message */
-    /* state estimate */
+    IMU_pub_counter++;
+    // read from IMU and do attitude estimation every time
     imu_.update();
     attitude_estimator_.update();
-    if (counter++ > 10){
-      counter = 0;
-      /* send message to ros at 100Hz*/
+    if (IMU_pub_counter >= IMU_pub_interval){
+      // publish IMU data to ROS
+      IMU_pub_counter = 0;
       attitude_estimator_.publish();
     }
   }

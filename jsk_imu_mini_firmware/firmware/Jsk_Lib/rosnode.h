@@ -6,12 +6,7 @@
 /* ros */
 #include <ros.h>
 /* inlcude ros message types*/
-#include <std_msgs/Int8.h>
-#include <nav_msgs/Odometry.h>
-#include <geometry_msgs/Twist.h>
 #include <jsk_imu_mini_msgs/Potentio.h>
-/* inlcude ros related class */
-#include <imu/imu_mpu9250.h>
 
 class RosNode
 {
